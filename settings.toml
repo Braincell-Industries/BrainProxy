@@ -8,10 +8,15 @@ prefix = "/"
 locale = "en-UK"
 
 [modules]
-mvpEmojis = true
+mvpEmojis = false
 ezBypass = false
 parkourTimer = false
 packetFilter = true
+owoSpeak = false
+wonkyText = false
+leetSpeak = false
+pirateSpeak = false
+reversedText = false
 
 [commands]
 test = true

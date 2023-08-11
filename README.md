@@ -40,13 +40,6 @@ If you find any other bugs or things that shouldn't be, join our [`Discord`] or 
 ## 📝 To-Do List
 Heres a glimpse of what's coming to BrainProxy, if you want to suggest anything you can do so in our [`Discord`].
 
-### Chat Modifiers
-- OwO Speak
-- Wonky Text
-- Leet Speak
-- Pirate Speak
-- Reverse Text
-
 ### Commands
 - help
   * Guide on how to use BrainProxy
