@@ -4,16 +4,17 @@
   "description": "Custom built proxy with a ton of features, made for Hypixel!",
   "main": "dist/index.js",
   "type": "module",
+  "license": "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
   "private": "true",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "npm run clean && npx tsc",
-    "clean": "rmdir /s /q dist",
-    "dev": "npm run clean && npx tsc && node dist/index.js",
-    "watch": "npm run clean && npx tsc -w",
-    "lint": "eslint '**/*.{js,ts,tsx}' --quiet --fix",
-    "format": "prettier --write '**/*.{js,jsx,ts,tsx}'"
-  },
+    "build": "npx tsc",
+    "clean": "if exist dist rd /s /q dist",
+    "dev": "npm run build && node dist/index.js",
+    "watch": "npm run build && npx tsc -w",
+    "lint": "eslint \"**/*.{js,ts,tsx}\" --quiet --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
+  },  
   "devDependencies": {
     "@types/node": "18.16.1",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
