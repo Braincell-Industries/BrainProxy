@@ -7,8 +7,8 @@ export default class extends ModuleBase implements Module {
   constructor() {
     // Call the constructor of the parent class with module settings.
     super({
-      name: 'lunarMods',
-      description: 'Enables all Lunar mods disabled by Hypixel',
+      name: 'packetFilter',
+      description: 'Filter out certain packets allowing you to enabled mods like freelook.',
       enabled: true,
     });
   }
