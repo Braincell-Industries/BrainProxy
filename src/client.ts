@@ -155,7 +155,7 @@ export class BrainProxy {
           response = await module.parseIncoming(data, meta, toClient, toServer, this, this.player);
         else response = await module.parseOutgoing(data, meta, toClient, toServer, this, this.player);
 
-        if (response.intercept) intercept = false;
+        if (response.intercept) intercept = true;
       } catch (err) {
         logger.error(`Error trying to run ${module.settings.name}`);
         logger.error(`${err}`);

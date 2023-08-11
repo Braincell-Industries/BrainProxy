@@ -1,7 +1,7 @@
 // @ts-ignore - Technically not allowed to import those but who cares :)
 import type { PacketMeta } from 'prismarine-proxy';
 import { ModuleBase, Module } from '../../utils/structures/moduleBase.js';
-import { pirateDictionary } from 'data/pirateSpeakLang.js';
+import { pirateDictionary } from '../../data/pirateSpeakLang.js';
 
 // Define a class that implements the Module interface.
 export default class extends ModuleBase implements Module {

@@ -55,6 +55,7 @@ proxy.on('outgoing', async (data, meta, toClient, toServer) => {
         try {
           logger.info(`Running command §3${commandName}`);
           await command.execute(args, data, meta, toClient, toServer, client, client.player);
+          intercept = false;
         } catch (e) {
           // Notify the client about the error.
           const insertThis = `Something went wrong running ${commandName}, please check the logs.`;
@@ -62,17 +63,16 @@ proxy.on('outgoing', async (data, meta, toClient, toServer) => {
           toClient.write('chat', { message: msg });
           logger.error(`${e}`);
         }
-
-        intercept = true;
       }
     }
   }
 
-  // Parse the packet using the client and update the intercept and data accordingly.
-  const response = await client.parsePacket(data, meta, toClient, toServer, 'outgoing');
-  if (intercept) intercept = response.intercept;
-  data = response.data;
+  // If interception is enabled, parse the packet using the client and update the data accordingly.
+  if (intercept) {
+    const response = await client.parsePacket(data, meta, toClient, toServer, 'outgoing');
+    data = response.data;
 
-  // If interception is disabled, write the data to the server.
-  if (!intercept) toServer.write(meta.name, data);
+    // If interception is disabled, write the data to the server.
+    if (!response.intercept) toServer.write(meta.name, data);
+  }
 });
