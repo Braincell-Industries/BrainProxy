@@ -1,66 +1,89 @@
 <div align="center">
-
-<img src="https://raw.githubusercontent.com/Braincell-Industries/public-assets/main/Logos/Globe/Globe_Emoji_64x64.png" alt="BrainProxy" />
-
-# BrainProxy
-Custom built proxy with a ton of features, made for Hypixel!
-
+    <img src="https://raw.githubusercontent.com/Braincell-Industries/public-assets/main/Logos/Globe/Globe_Emoji_64x64.png" alt="BrainProxy" />
+    <h1>BrainProxy</h1>
+    <p>Custom built proxy with a ton of features, made for Hypixel!</p>
 </div>
 
-## ⚒️ Made With
--   [`Node.js`]: For running code (`v18`)
+## ⚒️ Powered By
+-   [`Node.JS`]: The runtime for executing the code. (`v18`)
 -   [`TypeScript`]: For enhanced developer productivity
 
-## ⚒️ Requirements
--   [`Node.js`]: For running code (`v18`)
--   [`yarn`]: Installing packages and running scripts (`npm install -g yarn`)
+## ⚙️ Prerequisites
+-   [`Node.JS`]: Required for code execution. `v18`
+-   [`yarn`]: To manage packages and scripts. Install with: `npm install -g yarn`.
 
-## 💁 Credits
--   [`P28`]: The base this proxy is built on-top of, make sure to check them out!
--   [`Statsify`]: Stole their README Design
+## 💡 Acknowledgements
+-   [`P28`]: Serving as the foundation for BrainProxy.
+-   [`Statsify`]: Inspirational source for README styling.
 
-## 😕 Help
-* Join our [`Discord`] (work in progress)
-* Message me on Discord: `marni_`
+## 🆘 Get Support
+* Join our [`Discord`] community **(W.I.P)**
+* Reach me out on Discord: `marni_`
+
+## 📋 Feature Highlights
+- **Parkour Timer**: See a parkour timer, current checkpoint, time since last checkpoints
+- **Packet Filter**: Enable mods like Freelook on Lunar Client and Badlion, make Hypixel think you're using Vanilla
+
+## 🚀 Getting Started
+1. Install [`Node.JS`]
+2. Install dependencies: Run `yarn install`.
+3. Compile the code: Execute `npm run build`.
+4. Run the proxy: Use `node .`.
+
+## 🐛 Known Bugs
+If you find any other bugs or things that shouldn't be, join our [`Discord`] or DM me on Discord
+
+- First Login
+  * Currently the first login acts weirdly, like glitching into the ground, rank not showing up in F5
+  * I don't know what's causing this and will requires further investigation
 
 ## 📝 To-Do List
-- Chat Modifiers
-  * OwO Speak
-  * Wonky Text
-  * Leet Speak
-  * Pirate Speak
-  * Reverse Text
-- Commands
-  * /help
-  * /nicks
-- Modules
-  * AutoGG
-    * Custom AutoGG Message
-  * Stat Warnings
-    * Duels
-    * BedWars
-  * Auto Dodge
-    * RQ Instead of leaving (Optional)
-    * Auto dodge maps
-    * Auto dodge player names
-  * Nick Warnings
-  * Bridge
-    * Bridge Player Distance
+Heres a glimpse of what's coming to BrainProxy, if you want to suggest anything you can do so in our [`Discord`].
+
+### Chat Modifiers
+- OwO Speak
+- Wonky Text
+- Leet Speak
+- Pirate Speak
+- Reverse Text
+
+### Commands
+- help
+  * Guide on how to use BrainProxy
+- Prefix
+  * Change the prefix of the command
+  * For example /bp toggle, instead of /toggle
+- Nicks
+  * View current nicks in the lobby and try to de-nick them using AntiSniper API
+- Ping
+  * Ping
+  * Roundtrip latency
+
+### Modules
+- AutoGG
+  * Custom AutoGG Message
+  * Possibly more than 1 message (?)
+- Stat Warnings
+  * Duels
+  * BedWars
+- Auto Dodge
+  * Requeue instead of leaving (Optional)
+  * Auto dodge maps
+  * Auto dodge player names
+- Nick Warnings
+- Bridge
+  * Bridge Player Distance
 - Misc
   * Logs
     * Log Folder
     * Proper timestamps
+    * More information (debug purposes)
   * Logo
-    * Create an actual proper logo, instead of an emoji
+    * Design a dedicated logo (not just an emoji)
+    * Feel free to submit logos in the [`Discord`], credits will be given.
   * Releases
-    * Figure out why PKG doesn't let me build this project
-
-
-## 🚀 Running
-* Install NodeJS
-* Install all libs (`yarn install`)
-* Compile the code (`npm run build`)
-* Run the code (`node .`)
+    * Investigate PKG issues not allowing me to compile this project
+    * Probably because PKG only supports CommonJS, might re-write the project.
 
 <!-- LINKS -->
 [`node.js`]: https://nodejs.org/en/download/current/
