@@ -8,12 +8,10 @@ prefix = "/"
 locale = "en-UK"
 
 [modules]
-lunarMods = true
 mvpEmojis = true
 ezBypass = false
 parkourTimer = false
-locraw = true
-logChat = true
+packetFilter = true
 
 [commands]
 test = true
