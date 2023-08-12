@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // @ts-ignore - Technically not allowed to import those but who cares :)
 import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
 import type { BrainProxy } from '../../client.js';

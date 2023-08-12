@@ -16,6 +16,16 @@ const client = new BrainProxy(settings);
 // Start the proxy.
 const proxy = await client.startProxy();
 
+// Handle player join event
+proxy.on('start', (toClient) => {
+  logger.info(`§3${toClient.username}§f connected to the proxy`);
+});
+
+// Handle player join event
+proxy.on('end', (username) => {
+  logger.info(`§3${username}§f disconnected from the proxy`);
+});
+
 // Handle incoming data packets.
 proxy.on('incoming', async (data, meta, toClient, toServer) => {
   // If the incoming data's name is 'custom_payload' and channel is 'REGISTER',

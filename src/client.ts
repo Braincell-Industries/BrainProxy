@@ -28,6 +28,7 @@ export class BrainProxy {
   modules: Module[] = [];
   player: Player = EmptyPlayer;
 
+  // eslint-disable-next-line no-unused-vars
   constructor(public settings: Settings) {}
 
   // Method to start the proxy
@@ -40,7 +41,6 @@ export class BrainProxy {
     const proxy = new InstantConnectProxy({
       // Login handler logic
       loginHandler: (client: any) => {
-        logger.info(`Logging in as §3${client.profile.name}...`);
         this.player.username = client.username;
 
         return {

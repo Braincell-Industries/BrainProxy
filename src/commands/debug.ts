@@ -1,5 +1,5 @@
 // @ts-ignore - Technically not allowed to import those but who cares :)
-import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
+import type { PacketMeta, ServerClient } from 'prismarine-proxy';
 import { CommandBase, Command } from '../utils/structures/commandBase.js';
 // @ts-ignore
 import pJson from '../../package.json' assert { type: 'json' };
@@ -17,7 +17,7 @@ export default class extends CommandBase implements Command {
   }
 
   // Implement the 'execute' function required by the Command interface.
-  execute = async (args: string[], data: any, meta: PacketMeta, toClient: ServerClient, toServer: Client) => {
+  execute = async (args: string[], data: any, meta: PacketMeta, toClient: ServerClient) => {
     // Create a message object for the client.
     const infos = [
       `§aVersion: §r${pJson.version}`,
