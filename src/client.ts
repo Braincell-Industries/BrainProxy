@@ -4,6 +4,7 @@ import mcProtocal from 'minecraft-protocol';
 const { ping } = mcProtocal;
 type NewPingResult = mcProtocal.NewPingResult;
 import { readdirSync } from 'fs';
+import path from 'path';
 
 // Import Logger
 import BrainLogger from './utils/logger.js';
@@ -89,11 +90,13 @@ export class BrainProxy {
   // Method to load commands
   loadCommands = async () => {
     // Dynamically import command files
-    const commandFiles = await importRecursively('./dist/commands');
+    const commandFiles = await importRecursively(path.join(__dirname, './commands'));
 
     // Iterate through imported command classes
-    for (const CommandBase of commandFiles) {
-      const command = new CommandBase() as Command;
+    for (const commandObject of commandFiles) {
+      const CommandClass = commandObject.default; // Access the default property
+
+      const command = new CommandClass() as Command;
       command.settings.enabled = this.settings.commands?.[command.settings.name] ?? true;
 
       logger.success(`Added command §3${command.settings.name}`);
@@ -116,10 +119,12 @@ export class BrainProxy {
   // Method to load modules
   loadModules = async () => {
     // Dynamically import module files
-    const moduleFiles = await importRecursively('./dist/modules');
+    const moduleFiles = await importRecursively(path.join(__dirname, './modules'));
 
-    // Iterate through imported module classes
-    for (const ModuleBase of moduleFiles) {
+    // Iterate through imported module objects
+    for (const moduleObject of moduleFiles) {
+      const ModuleBase = moduleObject.default; // Access the default property
+
       const module = new ModuleBase() as Module;
       module.settings.enabled = this.settings.modules?.[module.settings.name] ?? true;
 
@@ -192,7 +197,8 @@ async function importRecursively(path: string, imports: Array<any> = []) {
       imports.push(...res);
     } else {
       if (file.name.match('Base')) continue;
-      const { default: defaultExport } = await import(`${path.replace('/dist', '')}/${file.name}?update=${Date.now()}`);
+      const { default: defaultExport } = await import(`file://${path.replace('/dist', '')}/${file.name}`);
+
       imports.push(defaultExport as Module);
     }
   }

@@ -3,7 +3,7 @@
   "version": "1.0.0-DEV",
   "description": "Custom built proxy with a ton of features, made for Hypixel!",
   "main": "dist/index.js",
-  "type": "module",
+  "bin": "dist/index.js",
   "license": "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
   "private": "true",
   "scripts": {
@@ -13,8 +13,22 @@
     "dev": "npm run build && node dist/index.js",
     "watch": "npm run build && npx tsc -w",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --quiet --fix",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
-  },  
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "pkg": "npm run build && npx pkg ."
+  },
+  "pkg": {
+    "scripts": "dist/**/*.js",
+    "assets": [
+      "node_modules/minecraft-packets/minecraft-packets/data/pc/1.8",
+      "dist/modules",
+      "dist/commands",
+      "package.json"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "pkg"
+  },
   "devDependencies": {
     "@types/node": "18.16.1",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
@@ -27,8 +41,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@iarna/toml": "^2.2.5",
-    "chalk": "^5.3.0",
+    "chalk": "4.1.0",
+    "js-yaml": "^4.1.0",
     "path": "^0.12.7",
     "prismarine-chat": "^1.8.0",
     "prismarine-proxy": "^1.1.4"

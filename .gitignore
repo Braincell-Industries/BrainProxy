@@ -12,21 +12,12 @@ pids
 logs
 results
 tmp
-
-
-# Build
-public/css/main.css
-
-# Coverage reports
-coverage
-
-# API keys and secrets
-.env
+ 
+# pkg
+pkg
 
 # Dependency directory
 node_modules
-bower_components
-
 
 # OS metadata
 .DS_Store
@@ -37,3 +28,6 @@ dist/**/*
 
 # ignore yarn.lock
 yarn.lock
+
+# ignore settings
+settings.yml
