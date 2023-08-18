@@ -36,6 +36,8 @@ If you find any other bugs or things that shouldn't be, join our [`Discord`] or 
 - First Login
   * Currently the first login acts weirdly, like glitching into the ground, rank not showing up in F5
   * I don't know what's causing this and will requires further investigation
+- Some Hypixel mods not working properly
+  * Fixed: see [`Fix Mods`](.github/fixmods.md)
 
 ## 📝 To-Do List
 Heres a glimpse of what's coming to BrainProxy, if you want to suggest anything you can do so in our [`Discord`].
