@@ -37,6 +37,9 @@ const emojis = {
   ':dog:': '(ᵔᴥᵔ)',
 };
 
+// Define a list of allowed chat commands.
+const allowedCommands = ['shout', 'msg', 'message', 'tell', 'whisper', 'w', 'r', 'reply', 'oc', 'ac', 'gc', 'pc'];
+
 // Define a class that implements the Module interface.
 export default class extends ModuleBase implements Module {
   constructor() {
@@ -58,6 +61,14 @@ export default class extends ModuleBase implements Module {
   parseOutgoing = async (data: any, meta: PacketMeta) => {
     // Check if the channel is chat
     if (meta.name === 'chat') {
+      // Create a regular expression pattern for allowed chat commands.
+      const regex = new RegExp(`${allowedCommands.map((v) => `/${v}s`).join('|')}`, 'gi');
+
+      // If the message starts with a command and is not in allowed commands, return original data.
+      if (data.message[0] === '/' && !data.message.match(regex)) {
+        return { intercept: false, data: data, meta: meta };
+      }
+
       // Replace the text with the emojis and return the data
       for (const [key, value] of Object.entries(emojis)) {
         const regex = new RegExp(key, 'gi');
