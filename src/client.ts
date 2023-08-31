@@ -20,6 +20,7 @@ import type { Settings } from './interfaces/settings.js';
 import type { Command } from './utils/structures/commandBase.js';
 import type { Module, ModuleReturn } from './utils/structures/moduleBase.js';
 import { updateSettings } from './utils/settings/updateSettings.js';
+import errorHandler from './utils/errorHandler.js';
 import { EmptyPlayer, Player } from './interfaces/player.js';
 
 // Define the BrainProxy class
@@ -37,6 +38,9 @@ export class BrainProxy {
     // Initialize configuration and log start
     const config = this.settings;
     logger.info('Starting proxy');
+
+    // Start the error handler
+    errorHandler();
 
     // Create a new instance of InstantConnectProxy
     const proxy = new InstantConnectProxy({
