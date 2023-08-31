@@ -70,20 +70,25 @@ export default class BrainLogger {
     }
   }
 
+  private addColorReset(text: string): string {
+    // Use chalk's reset method to append the ASCII escape code for color reset
+    return `${text}${chalk.reset()}`;
+  }
+
   public fatal(content: string, jsonContent?: object): void {
     if (jsonContent !== undefined) {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#eb544e')(`[fatal] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#eb544e')(`[fatal] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -94,14 +99,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#eb554e')(`[panic] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#eb554e')(`[panic] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -112,14 +117,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#ee7c68')(`[error] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#ee7c68')(`[error] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -130,14 +135,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#ee7c68')(`[error] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#ee7c68')(`[error] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -148,14 +153,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#75fb8d')(`[success] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#75fb8d')(`[success] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -166,14 +171,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#6eaeea')(`[notice] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#6eaeea')(`[notice] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -184,14 +189,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#86ccde')(`[info] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#86ccde')(`[info] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -202,14 +207,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#cd7acd')(`[debug] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#cd7acd')(`[debug] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
@@ -220,14 +225,14 @@ export default class BrainLogger {
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#7b7f81')(`[trace] `) +
-          this.formatContent(jsonContent),
+          this.addColorReset(this.formatContent(jsonContent)),
       );
     } else {
       console.log(
         chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
           chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
           chalk.hex('#7b7f81')(`[trace] `) +
-          this.formatContent(content),
+          this.addColorReset(this.formatContent(content)),
       );
     }
   }
