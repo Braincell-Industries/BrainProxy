@@ -1,7 +1,12 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
+// Import libraries
+// @ts-ignore
 import type { PacketMeta } from 'prismarine-proxy';
+
+// Import structures
 import { ModuleBase, Module } from '../../utils/structures/moduleBase.js';
-import { leetMap } from '../../data/leetSpeakLang.js';
+
+// Import data maps
+import { leetSpeakMap } from '../../data/maps/leetSpeakMap.js';
 
 // Define a list of allowed chat commands.
 const allowedCommands = ['shout', 'msg', 'message', 'tell', 'whisper', 'w', 'r', 'reply', 'oc', 'ac', 'gc', 'pc'];
@@ -34,10 +39,10 @@ export default class extends ModuleBase implements Module {
         return { intercept: false, data: data, meta: meta };
       }
 
-      // Replace characters with characters from the leetMap
+      // Replace characters with characters from the leetSpeakMap
       data.message = data.message
         .split('')
-        .map((v: string) => leetMap[v.toLowerCase()] || v)
+        .map((v: string) => leetSpeakMap[v.toLowerCase()] || v)
         .join('');
 
       // Return original packet data without intercepting.

@@ -1,4 +1,4 @@
-export const pirateDictionary: Record<string, string> = {
+export const pirateSpeakMap: Record<string, string> = {
   a: 'arr',
   an: 'aye',
   are: 'be',

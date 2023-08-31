@@ -1,5 +1,8 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
+// Import libraries
+// @ts-ignore
 import type { PacketMeta } from 'prismarine-proxy';
+
+// Import structures
 import { ModuleBase, Module } from '../../utils/structures/moduleBase.js';
 
 const emojis = {

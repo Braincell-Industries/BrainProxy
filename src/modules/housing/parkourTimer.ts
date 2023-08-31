@@ -1,27 +1,16 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
+// Import libraries
+// @ts-ignore
 import type { PacketMeta, ServerClient } from 'prismarine-proxy';
+
+// Import structures
 import { ModuleBase, Module } from '../../utils/structures/moduleBase.js';
+
+// Import helpers
+import { parseTime } from '../../utils/helpers/parseTime.js';
 
 let timeStarted: number | null;
 let timeStartedCheckpoint: number | null;
 let checkpoint: number | null;
-
-function parseTime(ms: number) {
-  let minutes: string | number = Math.floor(ms / 60000);
-  ms = ms - minutes * 60000;
-  let seconds: string | number = Math.floor(ms / 1000);
-  ms = ms - seconds * 1000;
-
-  minutes = minutes.toString();
-  seconds = seconds.toString();
-  let milliseconds = ms.toString();
-
-  while (minutes.length < 2) minutes = '0' + minutes;
-  while (seconds.length < 2) seconds = '0' + seconds;
-  while (milliseconds.length < 3) milliseconds = '0' + milliseconds;
-
-  return `§a${minutes}§f:§a${seconds}§f.§a${ms}`;
-}
 
 // Define a class that implements the Module interface.
 export default class extends ModuleBase implements Module {

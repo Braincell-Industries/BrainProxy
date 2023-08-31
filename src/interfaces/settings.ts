@@ -9,6 +9,7 @@ export interface Settings {
   settings: {
     prefix: string;
     locale: string;
+    motd: string;
   };
 
   modules: {

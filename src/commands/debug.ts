@@ -1,8 +1,9 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
-import type { PacketMeta, ServerClient } from 'prismarine-proxy';
-import { CommandBase, Command } from '../utils/structures/commandBase.js';
+// Import libraries
 // @ts-ignore
-import pJson from '../../package.json' assert { type: 'json' };
+import type { PacketMeta, ServerClient } from 'prismarine-proxy';
+
+// Import structures
+import { CommandBase, Command } from '../utils/structures/commandBase.js';
 
 // Define a class that implements the Command interface.
 export default class extends CommandBase implements Command {
@@ -20,12 +21,12 @@ export default class extends CommandBase implements Command {
   execute = async (args: string[], data: any, meta: PacketMeta, toClient: ServerClient) => {
     // Create a message object for the client.
     const infos = [
-      `§aVersion: §r${pJson.version}`,
+      `§aVersion: §r${process.env.npm_package_version}`,
       `§aUptime: §r${Math.floor(process.uptime() / 60)} minutes`,
       `§aProxy Memory Usage: §r${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} MB`,
       `§aProxy CPU Usage: §r${process.cpuUsage().system / 1000 / 1000}%`,
-      `§aDevelopment build: §r${pJson.version.endsWith('-DEV') ? 'Yes' : 'No'}`,
-      `§aBeta build: §r${pJson.version.endsWith('-BETA') ? 'Yes' : 'No'}`,
+      `§aDevelopment build: §r${process.env.npm_package_version?.endsWith('-DEV') ? 'Yes' : 'No'}`,
+      `§aBeta build: §r${process.env.npm_package_version?.endsWith('-BETA') ? 'Yes' : 'No'}`,
     ];
 
     // Send the message to the client.

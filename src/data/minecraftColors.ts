@@ -2,7 +2,7 @@ import { MinecraftColor } from '../interfaces/minecraftColors.js';
 
 //TODO - Fix Obfuscated, Bold, Strikethrough, underline, italic.
 
-export const minecraftColorCodes: MinecraftColor[] = [
+export const minecraftColors: MinecraftColor[] = [
   { mcName: 'black', colorCode: '§0', ansiEscapeCode: '\u001b[0;30m', hex: '#000000' },
   { mcName: 'dark_blue', colorCode: '§1', ansiEscapeCode: '\u001b[0;34m', hex: '#0000AA' },
   { mcName: 'dark_green', colorCode: '§2', ansiEscapeCode: '\u001b[0;32m', hex: '#00AA00' },

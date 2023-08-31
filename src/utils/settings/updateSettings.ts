@@ -8,6 +8,8 @@ const logger = new BrainLogger();
 
 // This function updates the settings in the YAML file.
 export function updateSettings(settings: Settings) {
+  logger.info('Updating settings');
+
   try {
     // Serialize and write the updated settings to the 'settings.yml' file in the root folder.
     writeFileSync('./settings.yml', dump(settings));

@@ -1,7 +1,12 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
+// Import libraries
+// @ts-ignore
 import type { PacketMeta } from 'prismarine-proxy';
+
+// Import structures
 import { ModuleBase, Module } from '../../utils/structures/moduleBase.js';
-import { pirateDictionary } from '../../data/pirateSpeakLang.js';
+
+// Import data maps
+import { pirateSpeakMap } from '../../data/maps/pirateSpeakMap.js';
 
 // Define a list of allowed chat commands.
 const allowedCommands = ['shout', 'msg', 'message', 'tell', 'whisper', 'w', 'r', 'reply', 'oc', 'ac', 'gc', 'pc'];
@@ -47,7 +52,7 @@ export default class extends ModuleBase implements Module {
   private convertToPirateSpeak(text: string): string {
     return text
       .split(' ')
-      .map((word) => pirateDictionary[word.toLowerCase()] || word)
+      .map((word) => pirateSpeakMap[word.toLowerCase()] || word)
       .join(' ');
   }
 }

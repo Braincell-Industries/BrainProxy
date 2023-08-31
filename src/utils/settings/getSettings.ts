@@ -2,9 +2,6 @@ import { readFileSync, writeFileSync } from 'fs';
 import { load, dump } from 'js-yaml'; // Import the 'dump' function
 import type { Settings } from '../../interfaces/settings.js';
 
-// Import Logger
-import BrainLogger from '../logger.js';
-
 // Define a default settings object
 const defaultSettings: Settings = {
   proxy: {
@@ -15,12 +12,11 @@ const defaultSettings: Settings = {
   settings: {
     prefix: '/',
     locale: 'en-UK',
+    motd: `          §kX§r §6BrainProxy§r §4§l- §r§6${process.env.npm_package_version} §r§kX§r\n`,
   },
   modules: {}, // Initialize the modules property as an empty object
   commands: {}, // Initialize the commands property as an empty object
 };
-
-const logger = new BrainLogger();
 
 // This function retrieves the settings from a YAML file.
 export function getSettings() {

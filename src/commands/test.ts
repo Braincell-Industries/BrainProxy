@@ -1,9 +1,14 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
+// Import libraries
+// @ts-ignore
 import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
+
+// Import structures
 import { CommandBase, Command } from '../utils/structures/commandBase.js';
 
-// Import Logger
+// Import utility modules
 import BrainLogger from '../utils/logger.js';
+
+// Create a new logger instance
 const logger = new BrainLogger();
 
 // Define a class that implements the Command interface.

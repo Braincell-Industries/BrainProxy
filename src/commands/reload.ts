@@ -1,15 +1,19 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
-import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
-// @ts-ignore
-import prismarineChat from 'prismarine-chat';
-// @ts-ignore
-const MessageBuilder = prismarineChat('1.8.9').MessageBuilder;
-import { CommandBase, Command } from '../utils/structures/commandBase.js';
+// Import main files
 import { BrainProxy } from '../client.js';
 
-// Import Logger
-import logger from '../utils/logger.js';
-new logger();
+// Import libraries
+// @ts-ignore
+import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
+import prismarineChat from 'prismarine-chat';
+
+// Import structures
+import { CommandBase, Command } from '../utils/structures/commandBase.js';
+
+// Import Managers
+import { reloadCommands } from '../managers/commandManager.js';
+import { reloadModules } from '../managers/moduleManager.js';
+
+const MessageBuilder = prismarineChat('1.8.9').MessageBuilder;
 
 // Define a class for the 'reload' command.
 export default class ReloadCommand extends CommandBase implements Command {
@@ -34,12 +38,12 @@ export default class ReloadCommand extends CommandBase implements Command {
   ) => {
     // Check if the argument matches 'module' or 'command' for specific reloads.
     if (args[0]?.match(/module/)) {
-      await proxyClient.reloadModules();
+      await reloadModules(proxyClient.settings, proxyClient);
     } else if (args[0]?.match(/command/)) {
-      await proxyClient.reloadCommands();
+      await reloadCommands(proxyClient.settings, proxyClient);
     } else {
-      await proxyClient.reloadCommands();
-      await proxyClient.reloadModules();
+      await reloadCommands(proxyClient.settings, proxyClient);
+      await reloadModules(proxyClient.settings, proxyClient);
     }
 
     // Construct a success message based on the reloaded entity.

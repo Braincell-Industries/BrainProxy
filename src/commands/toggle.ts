@@ -1,10 +1,15 @@
-// @ts-ignore - Technically not allowed to import those but who cares :)
+// Import main files
+import { BrainProxy } from '../client.js';
+
+// Import libraries
+// @ts-ignore
 import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
 import prismarineChat from 'prismarine-chat';
-// @ts-ignore
-const MessageBuilder = prismarineChat('1.8.9').MessageBuilder;
+
+// Import structures
 import { CommandBase, Command } from '../utils/structures/commandBase.js';
-import { BrainProxy } from '../client.js';
+
+const MessageBuilder = prismarineChat('1.8.9').MessageBuilder;
 
 // Define a class for the 'toggle' command.
 export default class ToggleCommand extends CommandBase implements Command {

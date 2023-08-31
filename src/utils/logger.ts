@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import util from 'util';
-import { minecraftColorCodes } from '../data/mcColorCodes.js';
+import { minecraftColors } from '../data/minecraftColors.js';
 
 //TODO - Add support for both & and § characters to color the output
 //TODO - Add support for colored numbers in a string
@@ -51,7 +51,7 @@ export default class BrainLogger {
   }
 
   private convertMinecraftColorsToAnsi(input: string): string {
-    for (const color of minecraftColorCodes) {
+    for (const color of minecraftColors) {
       const regex = new RegExp(`(${color.colorCode})`, 'g');
       input = input.replace(regex, color.ansiEscapeCode);
     }

@@ -1,27 +1,32 @@
-// @ts-ignore
+// Import libraries
 import { InstantConnectProxy } from 'prismarine-proxy';
 import mcProtocal from 'minecraft-protocol';
-const { ping } = mcProtocal;
-type NewPingResult = mcProtocal.NewPingResult;
-import { readdirSync } from 'fs';
-import path from 'path';
-
-// Import Logger
-import BrainLogger from './utils/logger.js';
-const logger = new BrainLogger();
-
-// Set the version
-let version = 'v1-DEV-0.0.0';
-
-// Import required types from various modules
 // @ts-ignore
 import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
-import type { Settings } from './interfaces/settings.js';
-import type { Command } from './utils/structures/commandBase.js';
-import type { Module, ModuleReturn } from './utils/structures/moduleBase.js';
-import { updateSettings } from './utils/settings/updateSettings.js';
+
+// Import interfaces
+import { Player } from './interfaces/player.js';
+import { EmptyPlayer } from './interfaces/player.js';
+import { Settings } from './interfaces/settings.js';
+
+// Import structures
+import { Command } from './utils/structures/commandBase.js';
+import { Module, ModuleReturn } from './utils/structures/moduleBase.js';
+
+// Import utility modules
+import BrainLogger from './utils/logger.js';
 import errorHandler from './utils/errorHandler.js';
-import { EmptyPlayer, Player } from './interfaces/player.js';
+import { updateSettings } from './utils/settings/updateSettings.js';
+
+// Import Managers
+import { loadCommands } from './managers/commandManager.js';
+import { loadModules } from './managers/moduleManager.js';
+
+// Create a new logger instance
+const logger = new BrainLogger();
+
+const { ping } = mcProtocal;
+type NewPingResult = mcProtocal.NewPingResult;
 
 // Define the BrainProxy class
 export class BrainProxy {
@@ -31,47 +36,46 @@ export class BrainProxy {
   player: Player = EmptyPlayer;
 
   // eslint-disable-next-line no-unused-vars
-  constructor(public settings: Settings) {}
+  constructor(public settings: Settings) {} // Constructor with settings parameter
 
   // Method to start the proxy
   startProxy = async () => {
-    // Initialize configuration and log start
-    const config = this.settings;
-    logger.info('Starting proxy');
+    const config = this.settings; // Store settings in a local variable
+    logger.info(`Starting BrainProxy - ${process.env.npm_package_version}`); // Log proxy start
 
-    // Start the error handler
-    errorHandler();
+    errorHandler(); // Start the error handler
 
     // Create a new instance of InstantConnectProxy
     const proxy = new InstantConnectProxy({
       // Login handler logic
       loginHandler: (client: any) => {
-        this.player.username = client.username;
+        this.player.username = client.username; // Set the player's username
 
         return {
           username: client.username,
           auth: 'microsoft',
         };
       },
-      // Server options for the proxy
+
+      // Server and client options for the proxy
       serverOptions: {
         validateChannelProtocol: false,
         port: this.settings.proxy.port,
-        // Logic for modifying ping response
+        version: this.settings.proxy.version,
+
+        // Logic for modifying the ping response
         async beforePing(response, client, callback) {
           let hypixel = (await ping({
             host: config.proxy.host,
             version: config.proxy.version,
           })) as NewPingResult;
 
-          const description = `          §kX§r §6BrainProxy§r §4§l- §r§6${version} §r§kX§r\n`;
+          const description = config.settings.motd;
           hypixel.description = hypixel.description.toString().replace(/.*\n/, description);
 
           if (callback) callback(null, hypixel);
         },
-        version: this.settings.proxy.version,
       },
-      // Client options for the proxy
       clientOptions: {
         version: this.settings.proxy.version,
         host: this.settings.proxy.host,
@@ -79,69 +83,13 @@ export class BrainProxy {
     });
 
     // Load commands, modules, and update settings
-    logger.info('Loading commands');
-    await this.loadCommands();
-    logger.info('Loading modules');
-    await this.loadModules();
-    logger.info('Updating settings');
-    this.updateSettings();
+    await loadCommands(this.settings, this);
+    await loadModules(this.settings, this);
+    updateSettings(this.settings);
 
     // Log proxy start and return the proxy instance
     logger.success(`Proxy started using version §a${this.settings.proxy.version}`);
     return proxy;
-  };
-
-  // Method to load commands
-  loadCommands = async () => {
-    // Dynamically import command files
-    const commandFiles = await importRecursively(path.join(__dirname, './commands'));
-
-    // Iterate through imported command classes
-    for (const commandObject of commandFiles) {
-      const CommandClass = commandObject.default; // Access the default property
-
-      const command = new CommandClass() as Command;
-      command.settings.enabled = this.settings.commands?.[command.settings.name] ?? true;
-
-      logger.success(`Added command §3${command.settings.name}`);
-      this.commands.set(command.settings.name, command);
-
-      // Add aliases for commands
-      for (const alias of command.settings.aliases) {
-        this.commands.set(alias, command);
-      }
-    }
-  };
-
-  // Method to reload commands
-  reloadCommands = async () => {
-    logger.success('§aReloaded commands');
-    this.commands.clear();
-    await this.loadCommands();
-  };
-
-  // Method to load modules
-  loadModules = async () => {
-    // Dynamically import module files
-    const moduleFiles = await importRecursively(path.join(__dirname, './modules'));
-
-    // Iterate through imported module objects
-    for (const moduleObject of moduleFiles) {
-      const ModuleBase = moduleObject.default; // Access the default property
-
-      const module = new ModuleBase() as Module;
-      module.settings.enabled = this.settings.modules?.[module.settings.name] ?? true;
-
-      logger.success(`Added module §3${module.settings.name}`);
-      this.modules.push(module);
-    }
-  };
-
-  // Method to reload modules
-  reloadModules = async () => {
-    logger.success('§aReloaded modules');
-    this.modules = [];
-    await this.loadModules();
   };
 
   // Method to parse incoming and outgoing packets
@@ -166,6 +114,7 @@ export class BrainProxy {
 
         if (response.intercept) intercept = true;
       } catch (err) {
+        // Handle errors while processing packets
         logger.error(`Error trying to run ${module.settings.name}`);
         logger.error(`${err}`);
         response = [false, data];
@@ -179,6 +128,7 @@ export class BrainProxy {
 
   // Method to update settings
   updateSettings = () => {
+    // Update settings for commands and modules
     this.commands.forEach((command) => {
       this.settings.commands[command.settings.name] = command.settings.enabled;
     });
@@ -187,25 +137,6 @@ export class BrainProxy {
       this.settings.modules[module.settings.name] = module.settings.enabled;
     });
 
-    updateSettings(this.settings);
+    updateSettings(this.settings); // Update settings using the utility function
   };
-}
-
-// Helper function to recursively import files from a directory
-async function importRecursively(path: string, imports: Array<any> = []) {
-  const files = readdirSync(path, { withFileTypes: true });
-
-  for (const file of files) {
-    if (file.isDirectory()) {
-      const res = await importRecursively(`${path}/${file.name}`);
-      imports.push(...res);
-    } else {
-      if (file.name.match('Base')) continue;
-      const { default: defaultExport } = await import(`file://${path.replace('/dist', '')}/${file.name}`);
-
-      imports.push(defaultExport as Module);
-    }
-  }
-
-  return imports;
 }
