@@ -15,13 +15,26 @@ export default () => {
 
   // Handle uncaught exceptions
   process.on('uncaughtException', (err: Error, origin: string) => {
-    logger.error(`Uncaught Exception: ${err.message}`);
-    console.log(err, '\n', origin);
-  });
+    const msg = err.message;
 
-  // Handle uncaught exceptions being monitored
-  process.on('uncaughtExceptionMonitor', (err: Error, origin: string) => {
-    logger.error(`Uncaught Exception (Monitor): ${err.message}`);
+    // Rate limited
+    if (
+      msg.includes('RateLimiter disallowed request') ||
+      (msg.includes('429 Too Many Requests') && msg.includes('"path" : "/authentication/login_with_xbox"'))
+    ) {
+      logger.error('You were RateLimited!');
+      return;
+    }
+
+    // Port taken
+    if (msg.includes('listen EADDRINUSE: address already in use')) {
+      logger.error(
+        'The Proxy Port is unavailable, check if another program is using it or if another instance of BrainProxy is running.',
+      );
+      process.exit(1);
+    }
+
+    logger.error(`Uncaught Exception: ${err.message}`);
     console.log(err, '\n', origin);
   });
 
