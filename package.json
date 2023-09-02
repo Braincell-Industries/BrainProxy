@@ -1,6 +1,6 @@
 {
   "name": "brainproxy",
-  "version": "1.0.0-DEV",
+  "version": "1.1.5",
   "description": "Custom built proxy with a ton of features, made for Hypixel!",
   "main": "dist/index.js",
   "bin": "dist/index.js",
@@ -37,8 +37,7 @@
     "js-yaml": "^4.1.0",
     "path": "^0.12.7",
     "prismarine-chat": "^1.8.0",
-    "prismarine-proxy": "^1.1.4",
-    "typed-emitter": "^2.1.0"
+    "prismarine-proxy": "^1.1.4"
   },
   "pkg": {
     "scripts": "dist/**/*.js",
