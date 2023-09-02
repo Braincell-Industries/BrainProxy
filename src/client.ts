@@ -43,6 +43,18 @@ export class BrainProxy {
     const config = this.settings; // Store settings in a local variable
     logger.info(`Starting BrainProxy - ${process.env.npm_package_version}`); // Log proxy start
 
+    // Log BrainProxy ASCII Logo
+    console.log(`\n\n
+    ____             _       ____                       
+   / __ )_________ _(_)___  / __ \\_________  _  ____  __
+  / __  / ___/ __ \`/ / __ \\/ /_/ / ___/ __ \\| |/_/ / / /
+ / /_/ / /  / /_/ / / / / / ____/ /  / /_/ />  </ /_/ / 
+/_____/_/   \\__,_/_/_/ /_/_/   /_/   \\____/_/|_|\\__, /  
+                                               /____/   \n\n`);
+
+    // Change process title
+    process.title = `BrainProxy - ${process.env.npm_package_version}`;
+
     errorHandler(); // Start the error handler
 
     // Create a new instance of InstantConnectProxy
@@ -59,7 +71,6 @@ export class BrainProxy {
 
       // Server and client options for the proxy
       serverOptions: {
-        validateChannelProtocol: false,
         port: this.settings.proxy.port,
         version: this.settings.proxy.version,
 
@@ -75,10 +86,18 @@ export class BrainProxy {
 
           if (callback) callback(null, hypixel);
         },
+        validateChannelProtocol: false,
       },
       clientOptions: {
         version: this.settings.proxy.version,
         host: this.settings.proxy.host,
+
+        // Handle Microsoft Authentication
+        onMsaCode(data) {
+          logger.info(
+            `Please login to Microsoft to continue! Go to "${data.verification_uri}" and enter the code ${data.user_code} to authenticate!`,
+          );
+        },
       },
     });
 

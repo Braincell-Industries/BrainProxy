@@ -37,7 +37,8 @@
     "js-yaml": "^4.1.0",
     "path": "^0.12.7",
     "prismarine-chat": "^1.8.0",
-    "prismarine-proxy": "^1.1.4"
+    "prismarine-proxy": "^1.1.4",
+    "typed-emitter": "^2.1.0"
   },
   "pkg": {
     "scripts": "dist/**/*.js",
