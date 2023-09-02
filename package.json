@@ -5,7 +5,12 @@
   "main": "dist/index.js",
   "bin": "dist/index.js",
   "license": "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
-  "private": "true",
+  "author": "ItzMarni",
+  "homepage": "https://github.com/Braincell-Industries/BrainProxy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Braincell-Industries/BrainProxy.git"
+  },
   "scripts": {
     "start": "node dist/index.js",
     "build": "npx tsc",
@@ -15,19 +20,6 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\" --quiet --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "pkg": "npm run build && npx pkg ."
-  },
-  "pkg": {
-    "scripts": "dist/**/*.js",
-    "assets": [
-      "node_modules/minecraft-packets/minecraft-packets/data/pc/1.8",
-      "dist/modules",
-      "dist/commands",
-      "package.json"
-    ],
-    "targets": [
-      "node18-win-x64"
-    ],
-    "outputPath": "pkg"
   },
   "devDependencies": {
     "@types/node": "18.16.1",
@@ -46,5 +38,26 @@
     "path": "^0.12.7",
     "prismarine-chat": "^1.8.0",
     "prismarine-proxy": "^1.1.4"
-  }
+  },
+  "pkg": {
+    "scripts": "dist/**/*.js",
+    "assets": [
+      "node_modules/minecraft-packets/minecraft-packets/data/pc/1.8",
+      "dist/modules",
+      "dist/commands",
+      "package.json"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "pkg"
+  },
+  "keywords": [
+    "proxy",
+    "minecraft",
+    "hypixel",
+    "hypixel-proxy",
+    "minecraft-proxy",
+    "brainproxy"
+  ]
 }

@@ -29,5 +29,8 @@ dist/**/*
 # ignore yarn.lock
 yarn.lock
 
+# VSCodeCounter ignore
+.VSCodeCounter
+
 # ignore settings
 settings.yml
