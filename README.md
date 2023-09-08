@@ -69,10 +69,6 @@ Heres a glimpse of what's coming to BrainProxy, if you want to suggest anything 
 - Bridge
   * Bridge Player Distance
 - Misc
-  * Logs
-    * Log Folder
-    * Proper timestamps
-    * More information (debug purposes)
   * Logo
     * Design a dedicated logo (not just an emoji)
     * Feel free to submit logos in the [`Discord`], credits will be given.

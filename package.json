@@ -1,6 +1,6 @@
 {
   "name": "brainproxy",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Custom built proxy with a ton of features, made for Hypixel!",
   "main": "dist/index.js",
   "bin": "dist/index.js",
