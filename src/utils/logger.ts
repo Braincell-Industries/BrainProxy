@@ -1,55 +1,80 @@
+// Import libraries
 import chalk from 'chalk';
 import util from 'util';
-import { minecraftColors } from '../data/minecraftColors.js';
+import fs from 'fs/promises';
+import path from 'path';
 
-//TODO - Add support for both & and § characters to color the output
-//TODO - Add support for colored numbers in a string
+// Import data
+import { minecraftColors } from '../data/minecraftColors.js'; // Importing color codes for Minecraft colors
 
+// Define a constant for the log folder path
+const LOG_FOLDER = './logs';
+
+// Define a class for logging functionality
 export default class BrainLogger {
-  private origin: string;
+  private origin: string; // Store the origin of the log message
 
   constructor() {
-    // Get the origin of the log message
-    this.origin = this.getLogOrigin().split(/[\\/]/).pop();
+    // Initialize the origin by extracting it from the call stack
+    this.origin = this.getLogOrigin().split(/[\\/]/).pop() || 'Unknown';
   }
 
-  private getLogOrigin() {
-    let filename: any;
-    // Save the current Error.prepareStackTrace function.
-    let _pst = Error.prepareStackTrace;
-    Error.prepareStackTrace = function (err, stack) {
-      // Override Error.prepareStackTrace to capture stack trace.
-      return stack;
-    };
-
-    try {
-      let err: any = new Error();
-      let callerFile: string;
-      let currentFile: string;
-
-      // Get the current file name.
-      currentFile = err.stack.shift().getFileName();
-
-      while (err.stack.length) {
-        // Get the file name of the caller
-        callerFile = err.stack.shift().getFileName();
-
-        if (currentFile !== callerFile) {
-          filename = callerFile;
-          break;
+  // Function to extract the origin from the call stack
+  private getLogOrigin(): string {
+    const stack = new Error().stack || '';
+    const stackLines = stack.split('\n');
+    for (let i = 1; i < stackLines.length; i++) {
+      if (!stackLines[i].includes(__filename)) {
+        const match = stackLines[i].match(/\(([^)]+)\)/);
+        if (match) {
+          return match[1];
         }
       }
-    } catch (err) {
-      console.log(err);
     }
-
-    // Restore the original Error.prepareStackTrace function
-    Error.prepareStackTrace = _pst;
-
-    // Return the file name of the origin
-    return filename;
+    return 'Unknown';
   }
 
+  // Function to get the current timestamp
+  private getCurrentTimestamp(): string {
+    const date = new Date();
+    return `${date.toLocaleTimeString()} `;
+  }
+
+  // Function to write log content to a file
+  private async writeLogToFile(logLevel: string, content: string): Promise<void> {
+    const logFileName = this.getLogFileName();
+    const logEntry = `[${this.getCurrentTimestamp()}] [${logLevel}] (pid:${process.pid}) [${this.origin}] ${content}\n`; // Include PID and filename in the log entry
+
+    try {
+      await fs.mkdir(LOG_FOLDER, { recursive: true }); // Create the log folder if it doesn't exist
+      await fs.appendFile(logFileName, logEntry); // Append the log entry to the log file
+    } catch (error) {
+      console.error(`Error writing log to file: ${error}`);
+    }
+  }
+
+  // Function to generate a log file name based on the current date
+  private getLogFileName(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const timestamp = `${year}-${month}-${day}`;
+    return path.join(LOG_FOLDER, `${timestamp}.log`);
+  }
+
+  // Function to format log content based on whether it's JSON or text
+  private formatContent(content: any, json?: boolean): string {
+    if (json) {
+      return JSON.stringify(content, null, 2);
+    } else if (typeof content === 'object') {
+      return util.inspect(content, { colors: true, depth: null });
+    } else {
+      return this.convertMinecraftColorsToAnsi(content);
+    }
+  }
+
+  // Function to convert Minecraft color codes to ANSI color codes
   private convertMinecraftColorsToAnsi(input: string): string {
     for (const color of minecraftColors) {
       const regex = new RegExp(`(${color.colorCode})`, 'g');
@@ -58,182 +83,80 @@ export default class BrainLogger {
     return input;
   }
 
-  private formatContent(content: any, json?: boolean): string {
-    if (json) {
-      return JSON.stringify(content, null, 2);
-    } else if (typeof content === 'object') {
-      // Format JSON objects
-      return util.inspect(content, { colors: true, depth: null });
-    } else {
-      // Format strings
-      return this.convertMinecraftColorsToAnsi(content);
+  // Function to log a message with a specified log level
+  private logMessage(logLevel: string, content: string, jsonContent?: object): void {
+    const timestamp = this.getCurrentTimestamp();
+    const pidAndOrigin = `(pid:${process.pid} ${this.origin}) `;
+    const formattedContent = this.formatContent(jsonContent || content, !!jsonContent);
+    const coloredTimestamp = chalk.hex('#aee4ed')(timestamp);
+    const coloredPidAndOrigin = chalk.hex('#b0b4b8')(pidAndOrigin);
+    const coloredLogLevel = chalk.hex(this.getLogLevelColor(logLevel))(`[${logLevel}] `);
+
+    const message = `${coloredTimestamp}${coloredPidAndOrigin}${coloredLogLevel}${formattedContent}`;
+    console.log(message); // Output the formatted log message to the console
+    this.writeLogToFile(logLevel, formattedContent); // Write the log message to a file
+  }
+
+  // Function to get the color for a log level
+  private getLogLevelColor(logLevel: string): string {
+    switch (logLevel) {
+      case 'fatal':
+        return '#eb544e';
+      case 'panic':
+        return '#eb554e';
+      case 'error':
+        return '#ee7c68';
+      case 'warn':
+        return '#ee7c68';
+      case 'success':
+        return '#75fb8d';
+      case 'notice':
+        return '#6eaeea';
+      case 'info':
+        return '#86ccde';
+      case 'debug':
+        return '#cd7acd';
+      case 'trace':
+        return '#7b7f81';
+      default:
+        return '#ffffff';
     }
   }
 
-  private addColorReset(text: string): string {
-    // Use chalk's reset method to append the ASCII escape code for color reset
-    return `${text}${chalk.reset()}`;
-  }
-
+  // Public methods for different log levels
   public fatal(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#eb544e')(`[fatal] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#eb544e')(`[fatal] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('fatal', content, jsonContent);
   }
 
   public panic(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#eb554e')(`[panic] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#eb554e')(`[panic] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('panic', content, jsonContent);
   }
 
   public error(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#ee7c68')(`[error] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#ee7c68')(`[error] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('error', content, jsonContent);
   }
 
   public warn(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#ee7c68')(`[error] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#ee7c68')(`[error] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('warn', content, jsonContent);
   }
 
   public success(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#75fb8d')(`[success] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#75fb8d')(`[success] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('success', content, jsonContent);
   }
 
   public notice(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#6eaeea')(`[notice] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#6eaeea')(`[notice] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('notice', content, jsonContent);
   }
 
   public info(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#86ccde')(`[info] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#86ccde')(`[info] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('info', content, jsonContent);
   }
 
   public debug(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#cd7acd')(`[debug] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#cd7acd')(`[debug] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('debug', content, jsonContent);
   }
 
   public trace(content: string, jsonContent?: object): void {
-    if (jsonContent !== undefined) {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#7b7f81')(`[trace] `) +
-          this.addColorReset(this.formatContent(jsonContent)),
-      );
-    } else {
-      console.log(
-        chalk.hex('#aee4ed')(new Date().toLocaleTimeString()) +
-          chalk.hex('#b0b4b8')(` (pid:${process.pid} ${this.origin}) `) +
-          chalk.hex('#7b7f81')(`[trace] `) +
-          this.addColorReset(this.formatContent(content)),
-      );
-    }
+    this.logMessage('trace', content, jsonContent);
   }
 }
