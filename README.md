@@ -4,11 +4,6 @@
     <p>Custom built proxy with a ton of features, made for Hypixel!</p>
 </div>
 
-## ⚠️ **Important Note:**
-I am not responsible for anything that happens when you use this project.
-
----
-
 ## ⚒️ Powered By
 -   [`Node.JS`]: The runtime for executing the code. (`v18`)
 -   [`TypeScript`]: For enhanced developer productivity

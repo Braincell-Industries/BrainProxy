@@ -13,10 +13,6 @@ const defaultSettings: Settings = {
     prefix: '/',
     locale: 'en-UK',
     motd: `          §kX§r §6BrainProxy§r §4§l- §r§6${process.env.npm_package_version} §r§kX§r\n`,
-    autoGG: {
-      messages: ['gg'],
-      delay: '1000',
-    },
   },
   modules: {}, // Initialize the modules property as an empty object
   commands: {}, // Initialize the commands property as an empty object
