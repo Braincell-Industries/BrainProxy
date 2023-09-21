@@ -10,6 +10,7 @@ export interface Settings {
     prefix: string;
     locale: string;
     motd: string;
+    autoGG: {};
   };
 
   modules: {
