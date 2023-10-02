@@ -4,8 +4,8 @@
     <p>Custom built proxy with a ton of features, made for Hypixel!</p>
 </div>
 
-## ⚠️ **Important Note:**
-I am not responsible for anything that happens when you use this project.
+> [!WARNING]
+> I am not responsible for anything that happens when you use this project.
 
 ---
 
