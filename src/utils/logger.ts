@@ -77,7 +77,7 @@ export default class BrainLogger {
   // Function to convert Minecraft color codes to ANSI color codes
   private convertMinecraftColorsToAnsi(input: string): string {
     for (const color of minecraftColors) {
-      const regex = new RegExp(`(${color.colorCode})`, 'g');
+      const regex = new RegExp(`(${color.colorCode}|${color.modernColorCode})`, 'g');
       input = input.replace(regex, color.ansiEscapeCode);
     }
     return input;
@@ -92,7 +92,7 @@ export default class BrainLogger {
     const coloredPidAndOrigin = chalk.hex('#b0b4b8')(pidAndOrigin);
     const coloredLogLevel = chalk.hex(this.getLogLevelColor(logLevel))(`[${logLevel}] `);
 
-    const message = `${coloredTimestamp}${coloredPidAndOrigin}${coloredLogLevel}${formattedContent}`;
+    const message = `${coloredTimestamp}${coloredPidAndOrigin}${coloredLogLevel}${formattedContent}\u001b[0m`;
     console.log(message); // Output the formatted log message to the console
     this.writeLogToFile(logLevel, formattedContent); // Write the log message to a file
   }

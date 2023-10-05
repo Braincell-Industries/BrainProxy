@@ -2,6 +2,7 @@
 export interface MinecraftColor {
   mcName: string;
   colorCode: string;
+  modernColorCode: string;
   ansiEscapeCode: string;
-  hex: string;
+  hex?: string;
 }
