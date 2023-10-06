@@ -1,8 +1,6 @@
 // Import libraries
 import { InstantConnectProxy } from 'prismarine-proxy';
 import mcProtocal from 'minecraft-protocol';
-// @ts-ignore
-import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
 
 // Import interfaces
 import { Player } from './interfaces/player.js';
@@ -22,6 +20,10 @@ import { updateSettings } from './utils/settings/updateSettings.js';
 import { loadCommands } from './managers/commandManager.js';
 import { loadModules } from './managers/moduleManager.js';
 
+// Import Types
+// @ts-ignore
+import type { PacketMeta, ServerClient, Client } from 'prismarine-proxy';
+
 // Create a new logger instance
 const logger = new BrainLogger();
 
@@ -40,6 +42,8 @@ export class BrainProxy {
 
   // Method to start the proxy
   startProxy = async () => {
+    const startTime = performance.now();
+
     const config = this.settings; // Store settings in a local variable
     logger.info(`Starting BrainProxy - ${process.env.npm_package_version}`); // Log proxy start
 
@@ -106,8 +110,11 @@ export class BrainProxy {
     await loadModules(this.settings, this);
     updateSettings(this.settings);
 
+    const endTime = performance.now();
+    const startTimeCalculated = (endTime - startTime).toFixed(2) + ' MS';
+
     // Log proxy start and return the proxy instance
-    logger.success(`Proxy started using version §a${this.settings.proxy.version}`);
+    logger.success(`Proxy started in &3${startTimeCalculated}&r using version §a${this.settings.proxy.version}`);
     return proxy;
   };
 
