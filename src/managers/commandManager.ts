@@ -13,7 +13,7 @@ import { Command } from '../utils/structures/commandBase.js';
 // Create a new logger instance
 const logger = new BrainLogger();
 
-// Method to load modules
+// Method to load commands
 export async function loadCommands(settings, proxy) {
   // Log the start of the command loading process
   logger.info('Loading commands');
@@ -43,8 +43,8 @@ export async function loadCommands(settings, proxy) {
 
       // Measure and log the load time for loading this command
       const commandTimeCurrent = performance.now();
-      const commandLoadTimeCalculated = (commandTimeCurrent - commandStartTime).toFixed(2) + ' MS';
-      logger.success(`&l├&r &3${command.settings.name}&r (${commandLoadTimeCalculated})`);
+      const commandLoadTimeCalculated = (commandTimeCurrent - commandStartTime).toFixed(2) + ' ms';
+      logger.success(`&l├&r &3${command.settings.name}&r &l(&b${commandLoadTimeCalculated}&r)`);
     })();
 
     commandPromises.push(promise);
@@ -55,14 +55,14 @@ export async function loadCommands(settings, proxy) {
 
   // Measure and log the total load time for loading all commands
   const endTime = performance.now();
-  const LoadTimeCalculated = (endTime - startTime).toFixed(2) + ' MS';
-  logger.success(`└ Successfully loaded all commands in &3${LoadTimeCalculated}`);
+  const LoadTimeCalculated = (endTime - startTime).toFixed(2) + ' ms';
+  logger.success(`└ Successfully loaded all commands in &b${LoadTimeCalculated}`);
 }
 
 // Method to reload commands (clears existing commands and loads them again)
 export async function reloadCommands(settings, proxy) {
   // Log that the commands are being reloaded
-  logger.success('§aReloaded commands');
+  logger.success('&3Reloaded commands');
 
   // Clear the existing commands from the proxy
   proxy.commands.clear();

@@ -24,12 +24,12 @@ async function main() {
 
   // Handle player join event
   proxy.on('start', (toClient: any) => {
-    logger.info(`§3${toClient.username}§f connected to the proxy`);
+    logger.info(`&a${toClient.username}&r connected to the proxy`);
   });
 
   // Handle player disconnect event
   proxy.on('end', (username: string) => {
-    logger.info(`§3${username}§f disconnected from the proxy`);
+    logger.info(`&c${username}&r disconnected from the proxy`);
   });
 
   // Handle incoming data packets
@@ -69,7 +69,7 @@ async function main() {
         // If the command is enabled, execute it and handle any errors
         if (command?.settings.enabled) {
           try {
-            logger.info(`Running command §3${commandName}`);
+            logger.info(`Running command &3${commandName}`);
             await command.execute(args, data, meta, toClient, toServer, client, client.player);
             intercept = false;
           } catch (e) {

@@ -45,7 +45,7 @@ export class BrainProxy {
     const startTime = performance.now();
 
     const config = this.settings; // Store settings in a local variable
-    logger.info(`Starting BrainProxy - ${process.env.npm_package_version}`); // Log proxy start
+    logger.info(`Starting BrainProxy - &3&l${process.env.npm_package_version}`); // Log proxy start
 
     // Log BrainProxy ASCII Logo
     console.log(`\n\n
@@ -99,7 +99,7 @@ export class BrainProxy {
         // Handle Microsoft Authentication
         onMsaCode(data) {
           logger.info(
-            `Please login to Microsoft to continue! Go to "${data.verification_uri}" and enter the code ${data.user_code} to authenticate!`,
+            `Please login to Microsoft to continue! Go to "${data.verification_uri}" and enter the code &b${data.user_code}&r to authenticate!`,
           );
         },
       },
@@ -114,7 +114,7 @@ export class BrainProxy {
     const startTimeCalculated = (endTime - startTime).toFixed(2) + ' MS';
 
     // Log proxy start and return the proxy instance
-    logger.success(`Proxy started in &3${startTimeCalculated}&r using version §a${this.settings.proxy.version}`);
+    logger.success(`Proxy started in &b${startTimeCalculated}&r using version &3${this.settings.proxy.version}`);
     return proxy;
   };
 
@@ -141,7 +141,7 @@ export class BrainProxy {
         if (response.intercept) intercept = true;
       } catch (err) {
         // Handle errors while processing packets
-        logger.error(`Error trying to run ${module.settings.name}`);
+        logger.error(`Error trying to run &c${module.settings.name}`);
         logger.error(`${err}`);
         response = [false, data];
       }

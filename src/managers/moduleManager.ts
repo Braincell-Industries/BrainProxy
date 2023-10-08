@@ -40,8 +40,8 @@ export async function loadModules(settings, proxy) {
 
       // Measure and log the load time for loading this module
       const moduleTimeCurrent = performance.now();
-      const moduleLoadTimeCalculated = (moduleTimeCurrent - moduleStartTime).toFixed(2) + ' MS';
-      logger.success(`&l├&r &3${module.settings.name}&r (${moduleLoadTimeCalculated})`);
+      const moduleLoadTimeCalculated = (moduleTimeCurrent - moduleStartTime).toFixed(2) + ' ms';
+      logger.success(`&l├&r &3${module.settings.name}&r &l(&b${moduleLoadTimeCalculated}&r)`);
     })();
 
     modulePromises.push(promise);
@@ -52,14 +52,14 @@ export async function loadModules(settings, proxy) {
 
   // Measure and log the total load time for loading all modules
   const endTime = performance.now();
-  const loadTimeCalculated = (endTime - startTime).toFixed(2) + ' MS';
-  logger.success(`└ Successfully loaded all modules in &r${loadTimeCalculated}`);
+  const loadTimeCalculated = (endTime - startTime).toFixed(2) + ' ms';
+  logger.success(`└ Successfully loaded all modules in &b${loadTimeCalculated}`);
 }
 
 // Method to reload modules
 export async function reloadModules(settings, proxy) {
   // Log that the modules are being reloaded
-  logger.success('§aReloaded modules');
+  logger.success('&3Reloaded modules');
 
   // Clear the existing modules in the proxy's modules array
   proxy.modules = [];
