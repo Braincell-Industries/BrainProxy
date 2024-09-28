@@ -5,6 +5,9 @@
 </div>
 
 > [!WARNING]
+> Holy shit ppl stop using this it's dead 😭
+
+> [!WARNING]
 > I am not responsible for anything that happens when you use this project.
 
 ---
